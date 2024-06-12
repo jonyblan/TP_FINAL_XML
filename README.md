@@ -5,6 +5,6 @@
 - BaseX: run ```sudo apt-get install basex``` on command line
 - Apache FOP: run ```sudo apt-get install fop``` on command line
 ## Command line
-```./tpe.sh [year] [type]```\n
-year must be an integer between 2013 and 2024\n
+```./tpe.sh [year] [type]```\
+year must be an integer between 2013 and 2024\
 type must be one of sc, xf, cw, go, mc
