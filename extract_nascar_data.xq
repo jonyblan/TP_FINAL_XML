@@ -32,8 +32,8 @@ let $filteredDrivers := $standings[@id]
 
 let $nascar_data :=
 <nascar_data>
-    <year>{ $year }</year>
-    <serie_type>{ $type }</serie_type>
+    <year>{ doc("drivers_standings.xml")//*:series/*:season/@year }</year>
+    <serie_type>{ doc("drivers_standings.xml")//*:series/@name }</serie_type>
     <drivers>
         {
             for $driver in $filteredDrivers
