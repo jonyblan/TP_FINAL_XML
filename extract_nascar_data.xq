@@ -12,7 +12,7 @@ declare function local:getDriverInfo($driverId as xs:string) as element(driver) 
             <birth_date>{ $driver/@birthday }</birth_date>
             <birth_place>{ $driver/@birth_place }</birth_place>
             {
-                if ($driver/*:car/*:manufacturer) then
+                if ($driver/car/*:manufacturer) then
                     <car>{ $driver/*:car/*:manufacturer/@name }</car>
                 else ()
             }

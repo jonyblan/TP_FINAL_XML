@@ -53,7 +53,7 @@
               <xsl:for-each select="/nascar_data/drivers/driver">
                 <fo:table-row>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="full_name/@full_name"/></fo:block></fo:table-cell>
-                  <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="concat(substring(country/@country, 1, 1),lower-case(substring(country/@country,2)))"/></fo:block></fo:table-cell>
+                  <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="concat(upper-case(substring(country/@country, 1, 1)),lower-case(substring(country/@country,2)))"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="country/@country"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_date/@birthday"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_place/@birth_place"/></fo:block></fo:table-cell>
