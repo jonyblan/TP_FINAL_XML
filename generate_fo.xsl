@@ -54,7 +54,6 @@
                 <fo:table-row>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="full_name/@full_name"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="concat(upper-case(substring(country/@country, 1, 1)),lower-case(substring(country/@country,2)))"/></fo:block></fo:table-cell>
-                  <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="country/@country"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_date/@birthday"/></fo:block></fo:table-cell>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_place/@birth_place"/></fo:block></fo:table-cell>
                   <xsl:choose>
@@ -62,17 +61,17 @@
                       <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="car/@name"/></fo:block></fo:table-cell>
                     </xsl:when>
                     <xsl:otherwise>
-                      <fo:table-cell><fo:block font-size="8pt" text-align="center">---</fo:block></fo:table-cell>
+                      <fo:table-cell><fo:block font-size="8pt" text-align="center">-</fo:block></fo:table-cell>
                     </xsl:otherwise>
                   </xsl:choose>
                   
-                  <xsl:variable name="rank" select="statistics/rank/@rank"/>
+                  <xsl:variable name="rank" select="rank/@rank"/>
                   <xsl:choose>
                     <xsl:when test="$rank &lt; 4">
-                      <fo:table-cell><fo:block color="green" font-size="8pt" text-align="center"><xsl:value-of select="statistics/rank/@rank"/></fo:block></fo:table-cell>
+                      <fo:table-cell><fo:block color="green" font-size="8pt" text-align="center"><xsl:value-of select="rank/@rank"/></fo:block></fo:table-cell>
                     </xsl:when>
                     <xsl:otherwise>
-                      <fo:table-cell><fo:block color="black" font-size="8pt" text-align="center"><xsl:value-of select="statistics/rank/@rank"/></fo:block></fo:table-cell>
+                      <fo:table-cell><fo:block color="black" font-size="8pt" text-align="center"><xsl:value-of select="rank/@rank"/></fo:block></fo:table-cell>
                     </xsl:otherwise>
                   </xsl:choose>
                   <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="statistics/season_points/@points"/></fo:block></fo:table-cell>

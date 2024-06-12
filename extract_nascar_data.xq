@@ -11,9 +11,10 @@ declare function local:getDriverInfo($driverId as xs:string) as element(driver) 
             <country>{ $driver/@country }</country>
             <birth_date>{ $driver/@birthday }</birth_date>
             <birth_place>{ $driver/@birth_place }</birth_place>
+			<rank>{ doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driverId]/@rank }</rank>
             {
-                if ($driver/car/*:manufacturer) then
-                    <car>{ $driver/*:car/*:manufacturer/@name }</car>
+                if ($driver/*:car/*:manufacturer) then
+                    <car>{ ($driver/*:car/*:manufacturer/@name)[1] }</car>
                 else ()
             }
             <statistics>
