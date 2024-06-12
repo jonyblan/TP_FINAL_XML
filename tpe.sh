@@ -15,11 +15,10 @@ then
 	year=$1
 	type=$2
 	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${SPORTRADAR_API} -o drivers_list.xml
-	sleep 10s
 	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=${SPORTRADAR_API} -o drivers_standings.xml
 	basex -byear=$1 -btype=$2 extract_nascar_data.xq
-	java -jar saxon-he-12.4.jar -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
+	java -jar ./Saxon-HE-12.4/saxon-he-12.4.jar -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
 	fop -fo nascar_page.fo -pdf nascar_page.pdf
 else
-	echo Argumentos invalidos
+	echo Invalid Args
 fi
