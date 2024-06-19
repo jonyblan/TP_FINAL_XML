@@ -2,7 +2,7 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
     <xsl:output method="xml" indent="yes"/>
 
-    <xsl:template match="/">
+	<xsl:template match="/">
         <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="A4" page-height="29.7cm" page-width="21cm" margin-top="1cm" margin-bottom="2cm" margin-left="1.5cm" margin-right="1.5cm">
@@ -14,8 +14,10 @@
 
             <fo:page-sequence master-reference="A4">
 				<xsl:choose>
-					<xsl:when test="error/@error != ''">
-						<fo:block line-height="14pt" font-size="10pt"><xsl:value-of select="/nascar_data/error/@error"/></fo:block>
+					<xsl:when test="/nascar_data/error != ''">
+							<fo:flow flow-name="xsl-region-body">
+								<fo:block line-height="14pt" font-size="10pt"><xsl:value-of select="/nascar_data/error"/></fo:block>
+							</fo:flow>
 					</xsl:when>
 					<xsl:otherwise>
 						<fo:static-content flow-name="xsl-region-before">
@@ -94,5 +96,21 @@
 		</xsl:choose>
       </fo:page-sequence>
     </fo:root>
+  </xsl:template>
+  <xsl:template match="error">
+		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+            <fo:layout-master-set>
+                <fo:simple-page-master master-name="A4" page-height="29.7cm" page-width="21cm" margin-top="1cm" margin-bottom="2cm" margin-left="1.5cm" margin-right="1.5cm">
+                    <fo:region-body margin-top="1cm"/>
+                    <fo:region-before region-name="xsl-region-before" extent="1cm"/>
+                    <fo:region-after extent="1.5cm"/>
+                </fo:simple-page-master>
+            </fo:layout-master-set>
+			<fo:page-sequence master-reference="A4">
+				<fo:flow flow-name="xsl-region-body">
+					<fo:block line-height="14pt" font-size="10pt"><xsl:value-of select="/nascar_data/error"/></fo:block>
+				</fo:flow>
+			 </fo:page-sequence>
+		</fo:root>
   </xsl:template>
 </xsl:stylesheet>
