@@ -1,25 +1,31 @@
 #!/bin/bash
 verifParam(){
-	if [[ $1 -ge 2013 ]] && [[ $1 -le 2024 ]] && [[ $2 == "sc" || $2 == "xf" || $2 == "cw" || $2 == "go" || $2 == "mc" ]]
+	if [[ $1 -lt 2013  ||  $1 -gt 2024 ]]
 	then
 		return 1
-	else
+	fi
+	if ! [[ $2 == "sc" || $2 == "xf" || $2 == "cw" || $2 == "go" || $2 == "mc" ]]
+	then
 		return 2
 	fi
+	if [[ $# -lt 3 ]]
+	then	
+		return 3
+	fi
+	return 0
 }
+
 year=$1
 type=$2
-SPORTRADAR_API=$3
-verifParam $*
-if [ $? -eq 1 ]
+api_key=$3
+verifParam $* 
+error=$?
+if [ $error -lt 1 ]
 then
-	error=0
-	echo https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${SPORTRADAR_API}
-	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${SPORTRADAR_API} -o drivers_list.xml
+	
+	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${api_key} -o drivers_list.xml
 	sleep 5s
-	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=${SPORTRADAR_API} -o drivers_standings.xml
-else
-	error=1
+	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=${api_key} -o drivers_standings.xml
 fi
 	
 	basex -byear=$1 -btype=$2  -berror=${error} extract_nascar_data.xq
