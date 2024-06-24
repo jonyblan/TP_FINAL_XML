@@ -2,8 +2,12 @@
 
 
 #Delete old files
-rm -rf ./*.{xml, fo}
-rm -rf ./nascar_data.pdf
+rm -rf drivers_list.xml
+rm -rf drivers_standings.xml
+rm -rf nascar_data.xml
+rm -rf nascar_page.fo
+rm -rf nascar_page.pdf
+echo "Old files deleted"
 
 #Input parameters
 year=$1
@@ -14,22 +18,28 @@ SPORTRADAR_API="CPREBHi9Is8DX6DeTxVWs9ibHEHjXzUYa4pBCepc"
 
 #Error check and logging
 verifParam(){
+	if [[ $1 == "clean" ]]
+	then
+		exit 0
+	fi
+	local error=1
 	if [[ $1 -lt 2013  ||  $1 -gt 2024 ]]
 	then
-		return 1
+		let error=$error*2
 	fi
 	if ! [[ $2 == "sc" || $2 == "xf" || $2 == "cw" || $2 == "go" || $2 == "mc" ]]
 	then
-		return 2
+		let error=$error*3
 	fi
-	return 0
+	return $error
 }
 
 verifParam $* 
 error=$?
+echo $error
 
 #Download data if parameters are valid
-if [ $error -lt 1 ]
+if [ $error -eq 1 ]
 then	
 	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${SPORTRADAR_API} -o drivers_list.xml
 	echo "2 second wait time to avoid too many requests error"

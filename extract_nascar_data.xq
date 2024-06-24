@@ -21,7 +21,23 @@ declare function local:getDriverInfo($data, $stats) as element(driver) {
         </driver>
 };
 
-if($error = 0)
+declare function local:yearError() as element(error) {
+	<error>
+		Illegal Arguments error: 
+		Valid years: 2013 to 2024
+		Recieved: Year {$year} /// 
+	</error>
+};
+
+declare function local:typeError() as element(error) {
+	<error>
+		Illegal Arguments error: 
+		Valid types: sc, xf, cw, go and mc
+		Recieved: {$type} /// 
+	</error>
+};
+
+if($error = 1)
   then
       let $series := doc("drivers_standings.xml")//*:series
 	  let $season := $series/*:season
@@ -36,36 +52,26 @@ xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
               {
                   for $driver in $filteredDrivers
 				  let $data := doc("drivers_list.xml")//*:series/*:season/*:driver[@id = $driver/@id]
-				  let $stats := doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driver/@id]
+				  let $stats := $season/*:driver[@id = $driver/@id]
                   return local:getDriverInfo($data, $stats)
               }
           </drivers>
       </nascar_data>
 
-    else
-    if ($error = 1)
-      then
-          <nascar_data>
-            <error>
-              Illegal Arguments error: 
-                    Valid years: 2013 to 2024
-                    Recieved: Year {$year}, </error>
-          </nascar_data>
-
-    else
-    if ($error = 2)
-      then
-          <nascar_data>
-            <error>
-              Illegal Arguments error: 
-                    Valid types: sc, xf, cw, go and mc
-                    Recieved:  {$type}, </error>
-          </nascar_data>
-       
-     else
-            <nascar_data>
-              <error>
-                Illegal Arguments error: 
-                    api key was empty 
-                    expected arguments (in order): Year Type Api_key</error>
-            </nascar_data>
+else 
+	<nascar_data xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
+	{
+		if($error mod 2 = 0)
+		then
+			if($error mod 3 = 0)
+			then
+				(local:yearError(), local:typeError())
+			else local:yearError()
+		else
+		if($error mod 3 = 0)
+		then
+			local:typeError()
+		else ()
+	}
+	</nascar_data>
