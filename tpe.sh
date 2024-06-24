@@ -36,7 +36,7 @@ then
 	sleep 2s
 	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=${SPORTRADAR_API} -o drivers_standings.xml
 fi
-	
-basex -byear=$1 -btype=$2  -berror=${error} extract_nascar_data.xq
-java -jar ./Saxon-HE-12.4/saxon-he-12.4.jar -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
-fop -fo nascar_page.fo -pdf nascar_page.pdf
+
+java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
+java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
+./fop-2.9/fop/fop -fo nascar_page.fo -pdf nascar_page.pdf

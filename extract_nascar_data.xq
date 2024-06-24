@@ -26,7 +26,8 @@ if($error = 0)
       let $series := doc("drivers_standings.xml")//*:series
 	  let $season := $series/*:season
       let $filteredDrivers := $season/*:driver[@id]
-      let $nascar_data :=
+
+	  return
       <nascar_data xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
           <year>{ data($season/@year) }</year>
@@ -40,35 +41,31 @@ xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
               }
           </drivers>
       </nascar_data>
-      return (file:write("nascar_data.xml", $nascar_data),$nascar_data)
+
     else
     if ($error = 1)
       then
-        let $nascar_data :=
           <nascar_data>
             <error>
               Illegal Arguments error: 
                     Valid years: 2013 to 2024
                     Recieved: Year {$year}, </error>
           </nascar_data>
-          return(file:write("nascar_data.xml",$nascar_data),$nascar_data)
+
     else
     if ($error = 2)
       then
-      let $nascar_data :=
           <nascar_data>
             <error>
               Illegal Arguments error: 
                     Valid types: sc, xf, cw, go and mc
                     Recieved:  {$type}, </error>
           </nascar_data>
-       return(file:write("nascar_data.xml",$nascar_data),$nascar_data)
+       
      else
-        let $nascar_data :=
             <nascar_data>
               <error>
                 Illegal Arguments error: 
                     api key was empty 
                     expected arguments (in order): Year Type Api_key</error>
             </nascar_data>
-       return(file:write("nascar_data.xml",$nascar_data),$nascar_data)
