@@ -51,14 +51,14 @@
 									</fo:table-row>
 
 					  <xsl:for-each select="/nascar_data/drivers/driver">
-					  	<xsl:variable name="rank" select="rank"/>
-						<xsl:if test="$rank != '' and $rank &lt;= 10">
+					  	<xsl:sort select="number(rank)"/>
+						<xsl:if test="rank != '' and rank &lt;= 10">
 							<xsl:variable name="color">
 							 	<xsl:choose>
-									<xsl:when test="$rank &lt;= 3">
+									<xsl:when test="rank &lt;= 3">
 										<xsl:text>lime</xsl:text>
 									</xsl:when>
-									<xsl:when test="$rank &lt;= 6">
+									<xsl:when test="rank &lt;= 6">
 										<xsl:text>blue</xsl:text>
 									</xsl:when>
 									<xsl:otherwise>

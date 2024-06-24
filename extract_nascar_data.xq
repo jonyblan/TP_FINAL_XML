@@ -21,6 +21,15 @@ declare function local:getDriverInfo($data, $stats) as element(driver) {
         </driver>
 };
 
+declare function local:apiError() as element(error) {
+	<error>
+		Illegal Arguments error: 
+		API Key missing 
+		Declare environment variable SPORTRADAR_API with command: 
+		$ export SPORTRADAR_API="*valid api key*" /// 
+	</error>
+};
+
 declare function local:yearError() as element(error) {
 	<error>
 		Illegal Arguments error: 
@@ -66,12 +75,26 @@ xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
 		then
 			if($error mod 3 = 0)
 			then
-				(local:yearError(), local:typeError())
-			else local:yearError()
+				if($error mod 5 = 0)
+				then
+					(local:apiError(), local:yearError(), local:typeError())
+				else
+					(local:apiError(), local:yearError())
+			else 
+				if($error mod 5 = 0)
+				then
+					(local:apiError(), local:typeError())
+				else
+					local:apiError()
 		else
 		if($error mod 3 = 0)
 		then
+			if($error mod 5 = 0)
+			then
+				(local:yearError(), local:typeError())
+			else
+				local:yearError()
+		else
 			local:typeError()
-		else ()
 	}
 	</nascar_data>
