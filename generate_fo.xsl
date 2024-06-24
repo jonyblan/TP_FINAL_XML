@@ -26,7 +26,7 @@
 
 						<fo:flow flow-name="xsl-region-body">
 							<fo:block space-before.optimum="15pt" space-after.optimum="15pt">
-								Drivers for <xsl:value-of select="/nascar_data/serie_type/@name"/> for <xsl:value-of select="/nascar_data/year/@year"/> season
+								Drivers for <xsl:value-of select="/nascar_data/serie_type"/> for <xsl:value-of select="/nascar_data/year"/> season
 							</fo:block>
 
 							<fo:table table-layout="fixed" width="100%">
@@ -51,41 +51,37 @@
 									</fo:table-row>
 
 					  <xsl:for-each select="/nascar_data/drivers/driver">
-					  	<xsl:variable name="rank" select="rank/@rank"/>
-						<xsl:if test="$rank != ''">
+					  	<xsl:variable name="rank" select="rank"/>
+						<xsl:if test="$rank != '' and $rank &lt;= 10">
 							<xsl:variable name="color">
 							 	<xsl:choose>
-									<xsl:when test="$rank &lt; 4">
+									<xsl:when test="$rank &lt;= 3">
 										<xsl:text>lime</xsl:text>
 									</xsl:when>
+									<xsl:when test="$rank &lt;= 6">
+										<xsl:text>blue</xsl:text>
+									</xsl:when>
 									<xsl:otherwise>
-										<xsl:choose>
-											<xsl:when test="$rank &lt; 7">
-												<xsl:text>blue</xsl:text>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:text>red</xsl:text>
-											</xsl:otherwise>
-										</xsl:choose>
+										<xsl:text>red</xsl:text>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable> 
 							<fo:table-row background-color="{$color}">
-							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="full_name/@full_name"/></fo:block></fo:table-cell>
-							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="concat(upper-case(substring(country/@country, 1, 1)),lower-case(substring(country/@country,2)))"/></fo:block></fo:table-cell>
-							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_date/@birthday"/></fo:block></fo:table-cell>
-							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_place/@birth_place"/></fo:block></fo:table-cell>
+							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="full_name"/></fo:block></fo:table-cell>
+							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="concat(upper-case(substring(country, 1, 1)),lower-case(substring(country,2)))"/></fo:block></fo:table-cell>
+							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_date"/></fo:block></fo:table-cell>
+							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="birth_place"/></fo:block></fo:table-cell>
 							  	<xsl:choose>
-									<xsl:when test="car/@name != ''">
-									  <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="car/@name"/></fo:block></fo:table-cell>
+									<xsl:when test="car != ''">
+									  <fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="car"/></fo:block></fo:table-cell>
 									</xsl:when>
 									<xsl:otherwise>
 									  <fo:table-cell><fo:block font-size="8pt" text-align="center">-</fo:block></fo:table-cell>
 									</xsl:otherwise>
 							 	</xsl:choose>
-								<fo:table-cell><fo:block  font-size="8pt" text-align="center"><xsl:value-of select="rank/@rank"/></fo:block></fo:table-cell>
-							 	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="statistics/season_points/@points"/></fo:block></fo:table-cell>
-							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="statistics/wins/@wins"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block  font-size="8pt" text-align="center"><xsl:value-of select="rank"/></fo:block></fo:table-cell>
+							 	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="statistics/season_points"/></fo:block></fo:table-cell>
+							  	<fo:table-cell><fo:block font-size="8pt" text-align="center"><xsl:value-of select="statistics/wins"/></fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:if>
 					  </xsl:for-each>

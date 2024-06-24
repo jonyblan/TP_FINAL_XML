@@ -1,43 +1,42 @@
-
-
 declare variable $error as xs:int external;
 declare variable $year as xs:int external;
 declare variable $type as xs:string external;
 
-declare function local:getDriverInfo($driverId as xs:string) as element(driver) {
-    let $driver := doc("drivers_list.xml")//*:series/*:season/*:driver[@id = $driverId]
-    return
+declare function local:getDriverInfo($data, $stats) as element(driver) {
         <driver>
-            <full_name>{ $driver/@full_name }</full_name>
-            <country>{ $driver/@country }</country>
-            <birth_date>{ $driver/@birthday }</birth_date>
-            <birth_place>{ $driver/@birth_place }</birth_place>
-			<rank>{ doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driverId]/@rank }</rank>
+            <full_name>{ data($data/@full_name) }</full_name>
+            <country>{ data($data/@country) }</country>
+            <birth_date>{ data($data/@birthday) }</birth_date>
+            <birth_place>{ data($data/@birth_place) }</birth_place>
+			<rank>{ data($stats/@rank) }</rank>
             {
-                if ($driver/*:car/*:manufacturer) then
-                    <car>{ ($driver/*:car/*:manufacturer/@name)[1] }</car>
+                if ($data/*:car/*:manufacturer) then
+                    <car>{ data(($data/*:car/*:manufacturer/@name)[1]) }</car>
                 else ()
             }
             <statistics>
-                <season_points>{ doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driverId]/@points }</season_points>
-                <wins>{ doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driverId]/@wins }</wins>
+                <season_points>{ data($stats/@points) }</season_points>
+                <wins>{ data($stats/@wins) }</wins>
             </statistics>
         </driver>
 };
 
 if($error = 0)
   then
-      let $standings := doc("drivers_standings.xml")//*:series/*:season/*:driver
-      let $filteredDrivers := $standings[@id]
+      let $series := doc("drivers_standings.xml")//*:series
+	  let $season := $series/*:season
+      let $filteredDrivers := $season/*:driver[@id]
       let $nascar_data :=
-      <nascar_data>
-          <error></error>
-          <year>{ doc("drivers_standings.xml")//*:series/*:season/@year }</year>
-          <serie_type>{ doc("drivers_standings.xml")//*:series/@name }</serie_type>
+      <nascar_data xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation= "nascar_data.xsd">
+          <year>{ data($season/@year) }</year>
+          <serie_type>{ data($series/@name) }</serie_type>
           <drivers>
               {
-                  for $x in (1 to 10)
-                  return local:getDriverInfo($filteredDrivers[$x]/@id)
+                  for $driver in $filteredDrivers
+				  let $data := doc("drivers_list.xml")//*:series/*:season/*:driver[@id = $driver/@id]
+				  let $stats := doc("drivers_standings.xml")//*:series/*:season/*:driver[@id = $driver/@id]
+                  return local:getDriverInfo($data, $stats)
               }
           </drivers>
       </nascar_data>
