@@ -37,7 +37,6 @@ verifParam(){
 
 verifParam $* 
 error=$?
-echo $error
 
 #Download data if parameters are valid
 if [ $error -eq 1 ]
@@ -46,9 +45,13 @@ then
 	echo "2 second wait time to avoid too many requests error"
 	sleep 2s
 	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=$SPORTRADAR_API -o drivers_standings.xml
+	echo "Files downloaded"
 fi
 
+echo "Processing Query"
 java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
-java -cp Saxon-HE-12.4/saxon-he-12.4.jar com.saxonica.Validate -xsd:nascar_data.xsd nascar_data.xml
+echo "Query processed, .xml created. Generating .fo"
 java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
+echo ".fo generated. Creating .pdf"
 ./fop-2.9/fop/fop -fo nascar_page.fo -pdf nascar_page.pdf
+echo ".pdf created. Script finished. Thank you!"
