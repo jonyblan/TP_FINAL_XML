@@ -24,11 +24,11 @@ verifParam(){
 	then
 		let error=$error*2
 	fi
-	if [[ $1 -lt 2013  ||  $1 -gt 2024 ]]
+	if [[ $1 -lt 2013  ||  $1 -gt 2024 || $1 == "" ]]
 	then
 		let error=$error*3
 	fi
-	if ! [[ $2 == "sc" || $2 == "xf" || $2 == "cw" || $2 == "go" || $2 == "mc" ]]
+	if ! [[ $2 == "sc" || $2 == "xf" || $2 == "cw" || $2 == "go" || $2 == "mc" || $2 == "" ]]
 	then
 		let error=$error*5
 	fi

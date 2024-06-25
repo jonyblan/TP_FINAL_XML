@@ -1,5 +1,5 @@
 declare variable $error as xs:int external;
-declare variable $year as xs:int external;
+declare variable $year as xs:string external;
 declare variable $type as xs:string external;
 
 declare function local:getDriverInfo($data, $stats) as element(driver) {
@@ -34,7 +34,7 @@ declare function local:yearError() as element(error) {
 	<error>
 		Illegal Arguments error: 
 		Valid years: 2013 to 2024
-		Recieved: Year {$year} /// 
+		Recieved: {$year} /// 
 	</error>
 };
 
