@@ -12,6 +12,7 @@ echo "Old files deleted"
 #Input parameters
 year=$1
 type=$2
+api_key=$3
 
 #Error check and logging
 verifParam(){
@@ -20,7 +21,7 @@ verifParam(){
 		exit 0
 	fi
 	local error=1
-	if [[ $SPORTRADAR_API == "" ]]
+	if [[ $3 == "" ]]
 	then
 		let error=$error*2
 	fi
@@ -41,10 +42,10 @@ error=$?
 #Download data if parameters are valid
 if [ $error -eq 1 ]
 then	
-	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=$SPORTRADAR_API -o drivers_list.xml
+	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/drivers/list.xml?api_key=${api_key} -o drivers_list.xml
 	echo "2 second wait time to avoid too many requests error"
 	sleep 2s
-	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=$SPORTRADAR_API -o drivers_standings.xml
+	curl https://api.sportradar.com/nascar-ot3/${type}/${year}/standings/drivers.xml?api_key=${api_key} -o drivers_standings.xml
 	echo "Files downloaded"
 fi
 
