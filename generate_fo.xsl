@@ -25,7 +25,7 @@
 						</fo:static-content>
 
 						<fo:flow flow-name="xsl-region-body">
-							<fo:block space-before.optimum="15pt" space-after.optimum="15pt">
+							<fo:block space-before.optimum="14pt" space-after.optimum="14pt">
 								Drivers for <xsl:value-of select="/nascar_data/serie_type"/> for <xsl:value-of select="/nascar_data/year"/> season
 							</fo:block>
 
@@ -92,21 +92,5 @@
 		</xsl:choose>
       </fo:page-sequence>
     </fo:root>
-  </xsl:template>
-  <xsl:template match="error">
-		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
-            <fo:layout-master-set>
-                <fo:simple-page-master master-name="A4" page-height="29.7cm" page-width="21cm" margin-top="1cm" margin-bottom="2cm" margin-left="1.5cm" margin-right="1.5cm">
-                    <fo:region-body margin-top="1cm"/>
-                    <fo:region-before region-name="xsl-region-before" extent="1cm"/>
-                    <fo:region-after extent="1.5cm"/>
-                </fo:simple-page-master>
-            </fo:layout-master-set>
-			<fo:page-sequence master-reference="A4">
-				<fo:flow flow-name="xsl-region-body">
-					<fo:block line-height="14pt" font-size="10pt"><xsl:value-of select="/nascar_data/error"/></fo:block>
-				</fo:flow>
-			 </fo:page-sequence>
-		</fo:root>
   </xsl:template>
 </xsl:stylesheet>
