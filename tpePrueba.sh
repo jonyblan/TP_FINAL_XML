@@ -49,11 +49,11 @@ then
 fi
 
 echo "Processing Query"
-java net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
+java -cp $WSLENV net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
 echo "Query processed, .xml created. Validating"
-java dom.Writer -v -n -s -f nascar_data.xml > /dev/null
+java -cp $WSLENV dom.Writer -v -n -s -f nascar_data.xml > /dev/null
 echo "Validated. Generating .fo"
-java net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
+java -cp $WSLENV net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
 echo ".fo generated. Creating .pdf"
 ./fop-2.9/fop/fop -fo nascar_page.fo -pdf nascar_page.pdf
 echo ".pdf created. Script finished. Thank you!"
