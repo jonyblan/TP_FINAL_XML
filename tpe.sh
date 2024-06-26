@@ -54,11 +54,11 @@ sed -i -e 's/ xmlns=".*\.xsd"//' drivers_standings.xml
 echo "Namespaces removed. Processing Query"
 if [[ "$WSL_DISTRO_NAME" == "Ubuntu" || "$CLASSPATH" == "" ]]
 then
-	java.exe -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
+	java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
 	echo "Query processed, .xml created. Validating"
-	java.exe -cp xerces-2_12_1/xercesImpl.jar:xerces-2_12_1/xercesSamples.jar:xerces-2_12_1/xml-apis.jar dom.Writer -v -n -s -f nascar_data.xml > /dev/null
+	java -cp xerces-2_12_1/xercesImpl.jar:xerces-2_12_1/xercesSamples.jar:xerces-2_12_1/xml-apis.jar dom.Writer -v -n -s -f nascar_data.xml > /dev/null
 	echo "Validated. Generating .fo"
-	java.exe -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
+	java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Transform -s:nascar_data.xml -xsl:generate_fo.xsl -o:nascar_page.fo
 else
 	java net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
 	echo "Query processed, .xml created. Validating"
