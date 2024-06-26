@@ -48,10 +48,13 @@ then
 	echo "Files downloaded"
 fi
 
-echo "Removing namespaces"
-sed -i -e 's/ xmlns=".*\.xsd"//' drivers_list.xml
-sed -i -e 's/ xmlns=".*\.xsd"//' drivers_standings.xml
-echo "Namespaces removed. Processing Query"
+if [[ $(($error % 2)) -eq 1 ]]
+then
+	echo "Removing namespaces"
+	sed -i -e 's/ xmlns=".*\.xsd"//' drivers_list.xml
+	sed -i -e 's/ xmlns=".*\.xsd"//' drivers_standings.xml
+fi
+echo "Processing Query"
 if [[ "$WSL_DISTRO_NAME" == "Ubuntu" || "$CLASSPATH" == "" ]]
 then
 	java -cp Saxon-HE-12.4/saxon-he-12.4.jar net.sf.saxon.Query -q:extract_nascar_data.xq error="$error" year="$year" type="$type" -o:nascar_data.xml
